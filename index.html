@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>GIDA DIRECT - Kaduna Houses No Agent Wahala</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
+body{background:#f5f7f0}
+header{background:#0a7a2e;color:white;padding:16px;text-align:center;position:sticky;top:0;z-index:10}
+header h1{font-size:22px}header p{font-size:13px;opacity:.9}
+.search{padding:12px;display:flex;gap:8px;background:white}
+.search input{flex:1;padding:12px;border:1px solid #ccc;border-radius:8px}
+.search button{background:#0a7a2e;color:white;border:0;padding:0 16px;border-radius:8px;font-weight:bold}
+.grid{padding:12px;display:grid;gap:12px}
+.card{background:white;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.card img{width:100%;height:180px;object-fit:cover}
+.card-body{padding:12px}
+.badge{display:inline-block;background:#e6f4ea;color:#0a7a2e;padding:3px 8px;border-radius:20px;font-size:11px;font-weight:bold;margin-bottom:6px}
+.price{color:#0a7a2e;font-weight:bold;font-size:18px}
+.loc{color:#666;font-size:13px;margin:4px 0}
+.btn{width:100%;margin-top:10px;padding:12px;border:0;border-radius:8px;font-weight:bold}
+.btn-unlock{background:#0a7a2e;color:white}
+.btn-whats{background:#25D366;color:white;margin-top:6px}
+.paybox{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);align-items:center;justify-content:center;padding:20px;z-index:20}
+.paybox.active{display:flex}
+.pay{background:white;padding:20px;border-radius:16px;width:100%;max-width:360px;text-align:center}
+.pay h3{margin-bottom:8px}
+.pay input{width:100%;padding:12px;margin:10px 0;border:1px solid #ccc;border-radius:8px}
+</style>
+</head>
+<body>
+<header>
+<h1>🏠 GIDA DIRECT</h1>
+<p>Kaduna Houses • No Agent • Direct Owner • ₦2k Unlock</p>
+</header>
+<div class="search">
+<input id="q" placeholder="Search Barnawa, Malali, Ungwan Rimi...">
+<button onclick="filterHouses()">Search</button>
+</div>
+<div class="grid" id="grid"></div>
+
+<div class="paybox" id="paybox">
+<div class="pay">
+<h3>Unlock Owner Number 🔓</h3>
+<p style="font-size:13px;color:#666">Pay ₦2,000 to get direct owner phone & address. No agent commission!</p>
+<p style="font-weight:bold;margin-top:10px">Opay: <span style="color:#0a7a2e">810 000 0000 - Umar Faruq</span></p>
+<p style="font-size:12px;margin:6px 0">After payment, send proof on WhatsApp</p>
+<input id="proof" placeholder="Enter transaction ID or your number">
+<button class="btn btn-unlock" onclick="unlockNow()">I Have Paid - Show Number</button>
+<button class="btn" style="background:#eee" onclick="closePay()">Cancel</button>
+<a id="waLink" target="_blank"><button class="btn btn-whats">Send Proof on WhatsApp</button></a>
+<div id="ownerBox" style="display:none;margin-top:15px;padding:12px;background:#e6f4ea;border-radius:8px;text-align:left">
+<b>Owner:</b> <span id="oName"></span><br>
+<b>Phone:</b> <a id="oPhone" href=""></a><br>
+<b>Address:</b> <span id="oAddr"></span>
+</div>
+</div>
+</div>
+
+<script>
+const houses=[
+{name:"2 Bedroom Flat - Barnawa",price:"₦650k/year",loc:"Barnawa, Kaduna - Near Our Lady's",img:"https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=600",owner:"Malam Ibrahim",phone:"08012345678",addr:"No 12, Barnawa Close, Kaduna"},
+{name:"Self Contain - Malali",price:"₦280k/year",loc:"Malali, Lowcost - G.R.A",img:"https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=600",owner:"Mrs. Aisha",phone:"08087654321",addr:"Malali Village, Behind NAF Base"},
+{name:"3 Bedroom Bungalow - Ungwan Rimi",price:"₦1.2M/year",loc:"Ungwan Rimi, Kaduna",img:"https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600",owner:"Alh. Sani",phone:"08123456789",addr:"No 4, Isa Kaita Road, Ungwan Rimi"},
+{name:"Single Room - Tudun Wada",price:"₦150k/year",loc:"Tudun Wada, Kaduna",img:"https://images.unsplash.com/photo-1502672023488-70e25813eb80?w=600",owner:"Yusuf Bello",phone:"09098765432",addr:"Tudun Wada, Near Friday Mosque"}
+];
+let current=null;
+function render(list){const g=document.getElementById('grid');g.innerHTML='';list.forEach((h,i)=>{g.innerHTML+=`<div class="card"><img src="${h.img}"><div class="card-body"><span class="badge">DIRECT OWNER</span><div class="price">${h.price}</div><div style="font-weight:bold">${h.name}</div><div class="loc">${h.loc}</div><button class="btn btn-unlock" onclick="openPay(${i})">Unlock Owner Number - ₦2k</button></div></div>`})}
+function filterHouses(){const q=document.getElementById('q').value.toLowerCase();render(houses.filter(h=>h.name.toLowerCase().includes(q)||h.loc.toLowerCase().includes(q)))}
+function openPay(i){current=houses[i];document.getElementById('paybox').classList.add('active');document.getElementById('ownerBox').style.display='none';document.getElementById('waLink').href=`https://wa.me/2348100000000?text=I%20paid%20for%20${encodeURIComponent(current.name)}%20-%20My%20Tx%20ID:%20`}
+function closePay(){document.getElementById('paybox').classList.remove('active')}
+function unlockNow(){if(!document.getElementById('proof').value){alert('Enter transaction ID');return;}document.getElementById('oName').innerText=current.owner;document.getElementById('oPhone').innerText=current.phone;document.getElementById('oPhone').href='tel:'+current.phone;document.getElementById('oAddr').innerText=current.addr;document.getElementById('ownerBox').style.display='block'}
+render(houses);
+</script>
+</body>
+</html>
